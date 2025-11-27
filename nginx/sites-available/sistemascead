@@ -16,6 +16,13 @@ server {
     error_log /var/log/nginx/error-sistemascead.log;
     access_log /var/log/nginx/access-sistemascead.log;
 
+    error_page 413 = @413_payload_too_large;
+
+    location @413_payload_too_large {
+        default_type application/json;
+        return 413 '{"detail": "Arquivo excede limite de tamanho. Entre em contato com o suporte tecnológico do CEAD: suporte.cead@ufjf.br"}';
+    }
+
     proxy_next_upstream error timeout http_502 http_503 http_504;
     error_page 502 503 504 http://www.cead.ufjf.br/5xx.html;
 
