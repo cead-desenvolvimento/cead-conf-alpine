@@ -5,4 +5,4 @@ PATH=/usr/bin:/bin
 
 find /media/truenas/proceg -type d -exec chmod 775 {} +
 find /media/truenas/proceg -type f -exec chmod 664 {} +
-chown -R 33:33 /cead/proceg
+chown -R 33:33 /media/truenas/proceg
