@@ -9,7 +9,7 @@ BACKUP_ROOT="/media/truenas/backups/site-cead-wordpress"
 BACKUP_DIR="$BACKUP_ROOT/$(date +%Y%m%d)"
 BACKUP_FILE="$BACKUP_DIR/site-cead-wordpress-$(date +%H).tar"
 LOG_FILE="$BACKUP_ROOT/backup-$(date +%Y%m%d).log"
-RETENTION_DAYS=15
+RETENTION_DAYS=30
 
 mkdir -p "$BACKUP_DIR"
 echo "[Backup] $(date +'%F %T') Iniciando backup: $BACKUP_FILE" >> "$LOG_FILE"
