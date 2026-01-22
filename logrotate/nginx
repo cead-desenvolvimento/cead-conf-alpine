@@ -8,6 +8,6 @@
     sharedscripts
     create 0640 nginx nginx
     postrotate
-        /etc/init.d/nginx reload > /dev/null 2>&1 || true
+        /usr/sbin/nginx -s reopen >/dev/null 2>&1 || true
     endscript
 }
