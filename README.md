@@ -60,9 +60,10 @@ Atualize e baixe os pacotes necessários
 
 ```bash
 apk update
-apk add ca-certificates docker docker-compose git libmaxminddb logrotate mailx msmtp nfs-utils nginx nginx-mod-http-geoip2 open-iscsi rsync tar util-linux
+apk add ca-certificates docker docker-compose fail2ban git libmaxminddb logrotate mailx msmtp nfs-utils nginx nginx-mod-http-geoip2 open-iscsi rsync tar util-linux
 update-ca-certificates
 rc-update add docker boot
+rc-update add fail2ban default
 rc-update add nginx default
 rc-update add iscsid default
 rc-update add netmount default

@@ -3,7 +3,7 @@
 
 PATH=/usr/bin:/bin
 
-echo ">>> [1/6] Configurando Docker..."
+echo ">>> [1/7] Configurando Docker..."
 if sh scripts/copiar_conf_docker.sh; then
     echo "✔ Docker configurado"
 else
@@ -11,7 +11,7 @@ else
     exit 1
 fi
 
-echo ">>> [2/6] Montando NFS..."
+echo ">>> [2/7] Montando NFS..."
 if sh scripts/montar_nfs.sh; then
     echo "✔ NFS montado"
 else
@@ -19,7 +19,7 @@ else
     exit 1
 fi
 
-echo ">>> [3/6] Copiando configurações de logrotate..."
+echo ">>> [3/7] Copiando configurações de logrotate..."
 if sh scripts/copiar_conf_logrotate.sh; then
     echo "✔ Logrotate configurado"
 else
@@ -27,7 +27,7 @@ else
     exit 1
 fi
 
-echo ">>> [4/6] Instalando tarefas de cron..."
+echo ">>> [4/7] Instalando tarefas de cron..."
 if sh scripts/instalar_cron.sh; then
     echo "✔ Cron configurado"
 else
@@ -35,7 +35,7 @@ else
     exit 1
 fi
 
-echo ">>> [5/6] Configurando Nginx..."
+echo ">>> [5/7] Configurando Nginx..."
 if sh scripts/copiar_conf_nginx.sh; then
     echo "✔ nginx configurado"
 else
@@ -43,7 +43,15 @@ else
     exit 1
 fi
 
-echo ">>> [5/6] Configurando msmtprc..."
+echo ">>> [6/7] Configurando fail2ban..."
+if sh scripts/copiar_conf_fail2ban.sh; then
+    echo "✔ fail2ban configurado"
+else
+    echo "⚠ Erro ao configurar fail2ban"
+    exit 1
+fi
+
+echo ">>> [7/7] Configurando msmtprc..."
 if sh scripts/copiar_conf_msmtprc.sh; then
     echo "✔ msmtprc configurado"
 else
