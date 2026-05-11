@@ -9,7 +9,7 @@ ignoreip = 127.0.0.1/8 10.0.0.0/8 172.16.0.0/16 172.18.0.0/16 200.131.0.0/16
 # ---- sistemascead ----
 [django-4xx-flood]
 enabled  = true
-port     = http,https
+port     = 80,443
 logpath  = /var/log/nginx/access-sistemascead.log
 filter   = nginx-4xx-flood
 maxretry = 15
@@ -19,7 +19,7 @@ bantime  = 48h
 # ---- site cead ----
 [wp-4xx-flood]
 enabled  = true
-port     = http,https
+port     = 80,443
 logpath  = /var/log/nginx/access-cead.log
 filter   = nginx-4xx-flood
 maxretry = 15
@@ -28,7 +28,7 @@ bantime  = 48h
 
 [wp-scan]
 enabled  = true
-port     = http,https
+port     = 80,443
 logpath  = /var/log/nginx/access-cead.log
 filter   = nginx-wp-scan
 maxretry = 5
