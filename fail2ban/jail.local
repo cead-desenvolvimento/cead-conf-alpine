@@ -1,4 +1,6 @@
 [DEFAULT]
+banaction = nftables[type=multiport]
+banaction_allports = nftables[type=allports]
 bantime  = 24h
 findtime = 1m
 maxretry = 10
