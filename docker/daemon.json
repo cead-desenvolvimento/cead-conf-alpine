@@ -3,5 +3,8 @@
     "log-opts": {
         "max-size": "10m",
         "max-file": "30"
-    }
+    },
+    "iptables": true,
+    "ip-forward": true,
+    "live-restore": true
 }
