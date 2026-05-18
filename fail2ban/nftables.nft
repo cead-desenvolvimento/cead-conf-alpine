@@ -1,0 +1,62 @@
+#!/usr/sbin/nft -f
+# vim: set ts=4 sw=4:
+
+# Clear all prior state
+flush ruleset
+
+table inet filter {
+	chain input {
+		type filter hook input priority 0; policy accept;
+
+		iifname lo accept comment "Accept any localhost traffic"
+
+		# ICMPv4
+		ip protocol icmp icmp type {
+			echo-reply,
+			destination-unreachable,
+			echo-request,
+			time-exceeded,
+			parameter-problem,
+		} accept comment "Accept ICMP"
+
+		# ICMPv6
+		icmpv6 type {
+			destination-unreachable,
+			packet-too-big,
+			time-exceeded,
+			parameter-problem,
+			echo-request,
+			echo-reply,
+		} accept comment "Accept basic IPv6 functionality"
+
+		icmpv6 type {
+			nd-router-solicit,
+			nd-router-advert,
+			nd-neighbor-solicit,
+			nd-neighbor-advert,
+		} ip6 hoplimit 255 accept comment "Allow IPv6 SLAAC"
+
+		icmpv6 type {
+			mld-listener-query,
+			mld-listener-report,
+			mld-listener-reduction,
+			mld2-listener-report,
+		} ip6 saddr fe80::/10 accept comment "Allow IPv6 multicast listener discovery on link-local"
+
+		ip6 saddr fe80::/10 udp sport 547 udp dport 546 accept comment "Accept DHCPv6 replies"
+	}
+
+	chain forward {
+		type filter hook forward priority 0; policy drop;
+	}
+
+	chain output {
+		type filter hook output priority 0; policy accept;
+	}
+}
+
+# The state of stateful objects saved on the nftables service stop.
+include "/var/lib/nftables/*.nft"
+
+# Rules
+include "/etc/nftables.d/*.nft"

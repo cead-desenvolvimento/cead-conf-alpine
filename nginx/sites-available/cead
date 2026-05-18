@@ -1,0 +1,62 @@
+server {
+    listen 80;
+    server_name cead.ufjf.br www.cead.ufjf.br;
+    return 301 https://www.cead.ufjf.br$request_uri;
+}
+
+server {
+    listen 443 ssl;
+    server_name cead.ufjf.br;
+
+    ssl_certificate /etc/nginx/ssl/cead.ufjf.br.crt;
+    ssl_certificate_key /etc/nginx/ssl/cead.ufjf.br.key;
+
+    return 301 https://www.cead.ufjf.br$request_uri;
+}
+
+server {
+    listen 443 ssl;
+    server_name www.cead.ufjf.br;
+
+    ssl_certificate /etc/nginx/ssl/cead.ufjf.br.crt;
+    ssl_certificate_key /etc/nginx/ssl/cead.ufjf.br.key;
+    ssl_protocols TLSv1.2 TLSv1.3;
+    ssl_ciphers HIGH:!aNULL:!MD5;
+
+    access_log /var/log/nginx/access-cead.log;
+    error_log /var/log/nginx/error-cead.log warn;
+
+    include /etc/nginx/snippets/rules/common.conf;
+    include /etc/nginx/snippets/rules/cead.conf;
+
+    location = /wp-login.php {
+        if ($banido) {
+            return 444;
+        }
+        limit_req zone=login burst=10 nodelay;
+        proxy_pass http://127.0.0.1:8090;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+    }
+
+    location ^~ /wp-admin/ {
+        if ($banido) {
+            return 444;
+        }
+        proxy_pass http://127.0.0.1:8090;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+    }
+
+    location / {
+        proxy_pass http://127.0.0.1:8090;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+    }
+}

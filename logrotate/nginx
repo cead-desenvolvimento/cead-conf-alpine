@@ -1,0 +1,13 @@
+/var/log/nginx/*.log {
+    weekly
+    rotate 12
+    missingok
+    notifempty
+    compress
+    delaycompress
+    sharedscripts
+    create 0640 nginx nginx
+    postrotate
+        /usr/sbin/nginx -s reopen >/dev/null 2>&1 || true
+    endscript
+}
