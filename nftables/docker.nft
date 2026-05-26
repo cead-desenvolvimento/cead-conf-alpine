@@ -1,8 +1,8 @@
 table inet filter {
     chain forward {
-        iifname "br-site-cead" accept
-        iifname "br-sistemas-cead" accept
-        oifname "br-site-cead" accept
-        oifname "br-sistemas-cead" accept
+        iifname "docker0" accept
+        oifname "docker0" accept
+        iifname "br-*" accept
+        oifname "br-*" accept
     }
 }
