@@ -1,8 +1,9 @@
 #!/usr/sbin/nft -f
 # vim: set ts=4 sw=4:
 
-# Clear all prior state
-flush ruleset
+# Flush only our filter table; preserve other tables (e.g. fail2ban's f2b-table)
+add table inet filter
+flush table inet filter
 
 table inet filter {
 	chain input {
