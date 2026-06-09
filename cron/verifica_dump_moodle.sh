@@ -10,15 +10,10 @@ verifica_integridade_dump() {
 		echo "ERRO: Dump nao encontrado ou nao descompactado corretamente" >> email_dump_moodle.txt
 		return 1
 	fi
-	head -n 1 /media/ibm/cgco/moodle/backup/moodledb_temp/moodle.sql >> email_dump_moodle.txt
+	grep -m 1 "MariaDB dump" /media/ibm/cgco/moodle/backup/moodledb_temp/moodle.sql >> email_dump_moodle.txt
 	if [ $? -ne 0 ]; then
-		echo "ERRO: Problema ao obter a primeira linha do arquivo" >> email_dump_moodle.txt
-		return 1
-	fi
-	head -n 1 /media/ibm/cgco/moodle/backup/moodledb_temp/moodle.sql | grep "MariaDB dump"
-	if [ $? -ne 0 ]; then
-		echo "ERRO: Primeira linha do dump parece inconsistente" >> email_dump_moodle.txt
-		return 1
+			echo "ERRO: Primeira linha do dump parece inconsistente" >> email_dump_moodle.txt
+			return 1
 	fi
 	echo "... dump ..." >> email_dump_moodle.txt
 	tail -n 1 /media/ibm/cgco/moodle/backup/moodledb_temp/moodle.sql >> email_dump_moodle.txt
