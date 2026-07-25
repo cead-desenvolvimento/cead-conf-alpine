@@ -8,6 +8,7 @@ cp -r /srv/cead-conf-alpine/nginx/* /etc/nginx/
 mkdir /etc/nginx/sites-enabled/
 ln -s /etc/nginx/sites-available/sistemascead /etc/nginx/sites-enabled/
 ln -s /etc/nginx/sites-available/cead /etc/nginx/sites-enabled/
+ln -s /etc/nginx/sites-available/encontrounasus /etc/nginx/sites-enabled/
 mv /tmp/ssl /etc/nginx/
 
 mkdir -p /etc/nginx/geoip2
