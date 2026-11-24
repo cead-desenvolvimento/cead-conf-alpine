@@ -7,6 +7,7 @@ PATH=/usr/bin:/bin
 CRONLINES="
 0 * * * * /srv/sistemascead-docker/database/backup.sh
 5 * * * * /srv/site-docker/database/backup.sh
+*/5 * * * * /srv/cead-conf-alpine/cron/garante_montagens.sh
 15 0 * * * find /media/ibm/cgco/moodle/ -type f -mtime +21 -delete
 45 0 * * * /srv/cead-conf-alpine/cron/permissao_nas.sh
 45 2 * * * /srv/cead-conf-alpine/cron/bkp_wordpress.sh
@@ -27,12 +28,15 @@ for script in \
     /srv/cead-conf-alpine/cron/sincroniza_ibm.sh \
     /srv/cead-conf-alpine/cron/verifica_integridade_moodle.sh \
     /srv/cead-conf-alpine/cron/envia_email_lista_backups_dia.sh \
-    /srv/cead-conf-alpine/cron/verifica_storages.sh
+    /srv/cead-conf-alpine/cron/verifica_storages.sh \
+    /srv/cead-conf-alpine/cron/garante_montagens.sh
 do
     chmod +x "$script"
 done
 
-TMPFILE=$(mktemp)
+TMPFILE=$(mktemp) || exit 1
+trap 'rm -f "$TMPFILE"' EXIT HUP INT TERM
+
 crontab -l 2>/dev/null > "$TMPFILE"
 
 echo "$CRONLINES" | while IFS= read -r line; do
@@ -41,4 +45,3 @@ echo "$CRONLINES" | while IFS= read -r line; do
 done
 
 crontab "$TMPFILE"
-rm -f "$TMPFILE"
